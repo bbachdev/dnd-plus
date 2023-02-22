@@ -1,10 +1,16 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
+import { useSession } from 'next-auth/react';
+import HomeGreeting from '@/components/HomeGreeting';
+import CampaignList from '@/components/CampaignList';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
+  const { data: session, status } = useSession();
+  
   return (
     <>
       <Head>
@@ -13,10 +19,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className='bg-gray-800'>
-      <h1 className='text-3xl text-white'>
-        Home
-      </h1>
+      <main className="min-h-screen">
+        <div className="min-h-screen flex justify-center items-center">
+          {(status == "unauthenticated") && 
+            <HomeGreeting/>
+          }
+          {(status == "authenticated") && 
+            <CampaignList/>
+          }
+        </div>
       </main>
     </>
   )
